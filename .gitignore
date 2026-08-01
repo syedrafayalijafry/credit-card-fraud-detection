@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Jupyter
+.ipynb_checkpoints/
+
+# VS Code
+.vscode/
+
+# Trained models
+models/*.pkl
+
+# Processed data
+data/processed/
+
+# Raw dataset (IEEE-CIS)
+data/raw/
+
+# Environment variables
+.env
+
+# Operating System files
+.DS_Store
+Thumbs.db
