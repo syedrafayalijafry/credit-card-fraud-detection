@@ -11,8 +11,8 @@ __pycache__/
 # Trained models
 models/*.pkl
 
-# Processed data
-data/processed/
+# Preprocessed data
+data/preprocessed/
 
 # Raw dataset (IEEE-CIS)
 data/raw/
