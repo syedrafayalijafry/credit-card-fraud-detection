@@ -27,8 +27,6 @@ Download the following files and place them inside:
 data/raw/
 ├── train_transaction.csv
 ├── train_identity.csv
-├── test_transaction.csv
-└── test_identity.csv
 ```
 
 ## Technologies Used
