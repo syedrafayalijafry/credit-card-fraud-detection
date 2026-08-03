@@ -3,7 +3,6 @@
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
-from sklearn.preprocessing import StandardScaler
 import os
 import pickle
 
@@ -275,51 +274,6 @@ def transform_features(df):
     return df
 
 
-# STANDARD SCALING (Optional)
-
-def scale_features(df, scaler=None, fit=True):
-    """
-    Apply Standard Scaling to numerical features.
-
-        - Use with Linear Models (e.g. Logistic Regression, SVM, Neural Netwroks etc)
-        - No need to use with Tree-Based Models (e.g. Random Forest, XGBoost, LightGBM etc)
-
-    NOTE:
-        - Target column (isFraud) is NOT scaled
-        - TransactionID already dropped
-        - Only numerical columns are scaled
-
-    """
-    print(f"\nApplying Standard Scaling")
-
-    # Separate target
-    target_col = None
-    if TARGET in df.columns:
-        target_col = df[TARGET].copy()
-        df = df.drop(columns=[TARGET])
-
-    # Get numerical columns only
-    num_cols = df.select_dtypes(
-        include=["int64", "float64"]
-    ).columns.tolist()
-
-    print(f"Columns to scale : {len(num_cols)}")
-
-    if fit:
-        scaler = StandardScaler()
-        df[num_cols] = scaler.fit_transform(df[num_cols])
-    else:
-        df[num_cols] = scaler.transform(df[num_cols])
-
-    # Put target back
-    if target_col is not None:
-        df[TARGET] = target_col
-
-    print(f"Scaling complete")
-
-    return df, scaler
-
-
 
 # SAVE FUNCTIONS
 
@@ -345,10 +299,11 @@ def save_preprocessed_data(df, filename):
     print(f"Shape : {df.shape}")
 
 
-def save_encoders(encoders, impute_values, dropped_cols, scaler=None):
+def save_encoders(encoders, impute_values, dropped_cols):
     """
-    Save encoders, imputation values, dropped columns
-    and scaler for use during prediction on new data.
+    
+    Save encoders, imputation values, and dropped
+    columns for use during prediction on new data.
 
     """
     models_dir = project_root / "models"
@@ -366,11 +321,6 @@ def save_encoders(encoders, impute_values, dropped_cols, scaler=None):
     with open(models_dir / "dropped_columns.pkl", "wb") as f:
         pickle.dump(dropped_cols, f)
 
-    # Save scaler only if provided
-    if scaler is not None:
-        with open(models_dir / "scaler.pkl", "wb") as f:
-            pickle.dump(scaler, f)
-        print(f"Scaler saved        : models/scaler.pkl")
 
     print(f"Encoders saved      : models/label_encoders.pkl")
     print(f"Impute vals saved   : models/impute_values.pkl")
@@ -380,7 +330,7 @@ def save_encoders(encoders, impute_values, dropped_cols, scaler=None):
 
 # MAIN PIPELINE
 
-def preprocess(save=True, apply_scaling=False):
+def preprocess(save=True):
     """
     Full preprocessing pipeline.
 
@@ -392,8 +342,7 @@ def preprocess(save=True, apply_scaling=False):
     5. Encode categorical features(Label Encoding)
     6. Impute missing values      (Median)
     7. Transform features         (log1p on TransactionAmt)
-    8. Scale features             (StandardScaler - optional)
-    9. Save preprocessed data
+    8. Save preprocessed data
 
     """
     print("=" * 60)
@@ -431,35 +380,21 @@ def preprocess(save=True, apply_scaling=False):
     print(f"\n[Step 7] Transforming features...")
     df = transform_features(df)
 
-    # ── Step 8: Scale Features (Optional) ──────────
-    scaler = None
-    if apply_scaling:
-        print(f"\n[Step 8] Scaling features...")
-        df, scaler = scale_features(df, fit=True)
-    else:
-        print(f"\n[Step 8] Scaling skipped (tree-based models)")
-
-    # ── Step 9: Save ───────────────────────────────
+    # ── Step 8: Save ───────────────────────────────
     if save:
-        print(f"\n[Step 9] Saving outputs...")
-        if apply_scaling:
-            save_preprocessed_data(
-                df,
-                "train_preprocessed_scaled.parquet"
-            )
-        else:
-            save_preprocessed_data(
-                df,
-                "train_preprocessed.parquet"
-            )
-        save_encoders(encoders, impute_values, dropped_cols, scaler)
+        print(f"\n[Step 8] Saving outputs...")
+        save_preprocessed_data(
+            df,
+            "train_preprocessed.parquet"
+        )
+        save_encoders(encoders, impute_values, dropped_cols)
 
     print("\n" + "=" * 60)
     print("         PREPROCESSING COMPLETE")
     print(f"         Final Shape : {df.shape}")
     print("=" * 60)
 
-    return df, encoders, impute_values, dropped_cols, scaler
+    return df, encoders, impute_values, dropped_cols
 
 
 # ─────────────────────────────────────────────
@@ -468,17 +403,7 @@ def preprocess(save=True, apply_scaling=False):
 
 if __name__ == "__main__":
 
-    # ── For Tree-Based Models ──────────────────
-    df, encoders, impute_values, dropped_cols, scaler = preprocess(
-        save=True,
-        apply_scaling=False
-    )
-
-    # ── For Linear Models (uncomment if needed) ─
-    # df, encoders, impute_values, dropped_cols, scaler = preprocess(
-    #     save=True,
-    #     apply_scaling=True
-    # )
+    df, encoders, impute_values, dropped_cols = preprocess(save=True)
 
     print("\n── Sample of preprocessed data ──")
     print(df.head())
