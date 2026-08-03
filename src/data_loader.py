@@ -27,3 +27,17 @@ def load_raw_data():
     )
     
     return raw_df
+
+if __name__ == "__main__":
+    
+    print("Loading and Merging Datsets...\n")
+   
+    df = load_raw_data()
+    
+    print("Dataset Loaded Successfully\n")
+    
+    print(f"Dataset Shape: {df.shape}\n")
+    
+    print("Dataset Preview:\n")
+    
+    print(df.head())
