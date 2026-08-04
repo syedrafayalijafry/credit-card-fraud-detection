@@ -8,9 +8,6 @@ __pycache__/
 # VS Code
 .vscode/
 
-# Trained models
-models/*.pkl
-
 # Preprocessed data
 data/preprocessed/
 
