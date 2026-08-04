@@ -15,7 +15,7 @@
         rel="stylesheet">
 
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!-- CSS -->
     <link rel="stylesheet" href="style.css">
@@ -82,16 +82,27 @@
 
             <!-- Product -->
             <div class="form-group">
-                <label for="product">Product Type</label>
+                <label for="product">
+                    <span>
+                        Product Type
+                    </span>
+                    <span class="tooltip">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span class="tooltip-text">
+                            This feature is anonymized in the IEEE-CIS Fraud Detection dataset.
+                            Values are assigned by the dataset creators and do not represent
+                            publicly disclosed product categories.
+                        </span>
+                    </span>
+                </label>
                 <select id="product">
-                    <option value="W">W - Digital Wallet</option>
-                    <option value="C">C - Credit</option>
-                    <option value="R">R - Retail</option>
-                    <option value="H">H - Household</option>
-                    <option value="S">S - Subscription</option>
+                    <option value="W">W</option>
+                    <option value="C">C</option>
+                    <option value="R">R</option>
+                    <option value="S">S</option>
+                    <option value="H">H</option>
                 </select>
             </div>
-
 
             <!-- Card Network -->
             <div class="form-group">
