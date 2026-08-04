@@ -1,5 +1,6 @@
 # src/predict.py
 
+from datetime import datetime
 import pickle
 import json
 from pathlib import Path
@@ -119,6 +120,27 @@ def preprocess_input(
 
 def predict_fraud(transaction):
 
+    # Create time-based features
+
+    transaction_date = transaction.pop("transaction_date")
+    transaction_time = transaction.pop("transaction_time")
+
+    dt = datetime.strptime(
+        f"{transaction_date} {transaction_time}",
+        "%Y-%m-%d %H:%M"
+    )
+
+    transaction["tx_hour"] = dt.hour
+
+    transaction["tx_day_of_week"] = dt.weekday()
+
+    transaction["tx_is_weekend"] = int(
+        dt.weekday() >= 5
+    )
+
+    transaction["tx_is_night"] = int(
+        dt.hour < 6 or dt.hour >= 22
+    )
 
     (
         model,
@@ -128,15 +150,12 @@ def predict_fraud(transaction):
 
     ) = load_assets()
 
-
-
     X = preprocess_input(
         transaction,
         feature_order,
         default_values,
         feature_mapping
     )
-
 
     probability = model.predict_proba(X)[0][1]
 
@@ -146,7 +165,6 @@ def predict_fraud(transaction):
         else 0
     )
 
-    # Confidence level
     if probability >= 0.90 or probability <= 0.10:
         confidence = "High"
 
@@ -193,20 +211,24 @@ if __name__ == "__main__":
 
         "TransactionAmt": 100.0,
 
+        "transaction_date": "2026-08-05",
+
+        "transaction_time": "14:30",
+
         "ProductCD": "W",
 
         "card4": "visa",
 
         "card6": "debit",
 
-        "M4": "M0"
+        "DeviceType": "desktop"
 
-    }
+        }
 
 
     result = predict_fraud(
-        sample_transaction
-    )
+            sample_transaction
+        )
 
 
     print("\nPrediction Result:")

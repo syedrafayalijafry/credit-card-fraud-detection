@@ -34,7 +34,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5500"], 
+    allow_origins=["*"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -46,13 +46,15 @@ class Transaction(BaseModel):
 
     TransactionAmt: float
 
-    ProductCD: str | None = None
+    transaction_date: str
 
-    card4: str | None = None
+    transaction_time: str
 
-    card6: str | None = None
+    ProductCD: str
 
-    M4: str | None = None
+    card4: str
+
+    card6: str
 
 
 

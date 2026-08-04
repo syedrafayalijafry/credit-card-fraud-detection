@@ -7,7 +7,11 @@ predictBtn.addEventListener("click", predictTransaction);
 
 async function predictTransaction() {
 
-    const amount = parseFloat(document.getElementById("amount").value);
+    const amount = parseFloat(document.getElementById("transactionAmt").value);
+
+    const transactionDate = document.getElementById("transactionDate").value;
+
+    const transactionTime = document.getElementById("transactionTime").value;
 
     if (isNaN(amount) || amount <= 0) {
 
@@ -17,19 +21,40 @@ async function predictTransaction() {
 
     }
 
+    if (!transactionDate) {
+
+        alert("Please select the transaction date.");
+
+        return;
+
+    }
+
+    if (!transactionTime) {
+
+        alert("Please select the transaction time.");
+
+        return;
+
+    }
+
+
     const data = {
 
         TransactionAmt: amount,
 
+        transaction_date: transactionDate,
+
+        transaction_time: transactionTime,
+
         ProductCD: document.getElementById("product").value,
 
-        card4: document.getElementById("card4").value,
+        card4: document.getElementById("cardNetwork").value,
 
-        card6: document.getElementById("card6").value,
-
-        M4: document.getElementById("m4").value
+        card6: document.getElementById("cardType").value,
 
     };
+
+    waiting.style.display = "block";
 
     waiting.innerHTML = `
         <i class="fa-solid fa-spinner fa-spin"></i>
@@ -67,6 +92,8 @@ async function predictTransaction() {
     }
 
     catch (error) {
+
+        waiting.style.display = "block";
 
         waiting.innerHTML = `
             <i class="fa-solid fa-circle-xmark"></i>
