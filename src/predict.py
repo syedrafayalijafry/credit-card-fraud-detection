@@ -11,8 +11,7 @@ from pandas.api.types import is_string_dtype
 
 # PROJECT ROOT
 
-project_root = Path.cwd()
-
+project_root = Path(__file__).resolve().parent.parent
 # PATHS
 
 MODEL_DIR = project_root / "models"

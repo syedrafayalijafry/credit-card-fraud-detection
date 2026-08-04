@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Credit Card Fraud Detection</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ================= HEADER ================= -->
+
+    <header>
+
+        <div class="logo">
+
+            <i class="fa-solid fa-shield-halved"></i>
+
+            <div>
+
+                <h1>Credit Card Fraud Detection</h1>
+
+                <p>AI Powered Transaction Risk Analysis</p>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="container">
+
+
+        <!-- ================= INPUT CARD ================= -->
+
+        <section class="card input-card">
+
+            <h2>
+
+                <i class="fa-solid fa-credit-card"></i>
+
+                Transaction Details
+
+            </h2>
+
+
+            <div class="form-group">
+
+                <label for="amount">
+
+                    Transaction Amount
+
+                </label>
+
+                <input type="number" id="amount" placeholder="Enter amount">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="product">
+
+                    Product Category
+
+                    <span class="tooltip">
+
+                        <i class="fa-solid fa-circle-info"></i>
+
+                        <span class="tooltip-text">
+
+                            Product categories are anonymized codes (W, C, R, H, S) from the IEEE-CIS Credit Card Fraud
+                            Detection dataset.
+
+                        </span>
+
+                    </span>
+
+                </label>
+
+                <select id="product">
+
+                    <option value="W">Category W</option>
+
+                    <option value="C">Category C</option>
+
+                    <option value="R">Category R</option>
+
+                    <option value="H">Category H</option>
+
+                    <option value="S">Category S</option>
+
+                </select>
+
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="card4">
+
+                    Card Network
+
+                </label>
+
+                <select id="card4">
+
+                    <option value="visa">Visa</option>
+                    <option value="mastercard">MasterCard</option>
+                    <option value="discover">Discover</option>
+                    <option value="american express">American Express</option>
+                    <option value="missing">Other / Unknown / Missing</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="card6">
+
+                    Card Type
+
+                </label>
+
+                <select id="card6">
+
+                    <option value="debit">Debit</option>
+                    <option value="credit">Credit</option>
+                    <option value="debit or credit">Debit or Credit</option>
+                    <option value="charge card">Charge Card</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="m4">
+
+                    Anonymized Feature (M4)
+
+                    <span class="tooltip">
+
+                        <i class="fa-solid fa-circle-info"></i>
+
+                        <span class="tooltip-text">
+
+                            M4 is an anonymized categorical feature from the IEEE-CIS fraud detection dataset.
+                            Its original business meaning is intentionally hidden by the dataset creators.
+
+                        </span>
+
+                    </span>
+
+                </label>
+
+                <select id="m4">
+
+                    <option value="M0">M0</option>
+                    <option value="M1">M1</option>
+                    <option value="M2">M2</option>
+
+                </select>
+
+            </div>
+
+
+            <button id="predictBtn">
+
+                <i class="fa-solid fa-magnifying-glass-chart"></i>
+
+                Analyze Transaction
+
+            </button>
+
+        </section>
+
+
+
+        <!-- ================= RESULT CARD ================= -->
+
+        <section class="card result-card">
+
+            <h2>
+
+                <i class="fa-solid fa-chart-line"></i>
+
+                Prediction Result
+
+            </h2>
+
+
+            <div id="resultContainer">
+
+
+                <div class="waiting">
+
+                    <i class="fa-solid fa-hourglass-half"></i>
+
+                    <p>
+
+                        Waiting for prediction...
+
+                    </p>
+
+                </div>
+
+
+                <div class="result-box hidden">
+
+
+                    <div class="result-item">
+
+                        <span>
+
+                            Fraud Probability
+
+                        </span>
+
+                        <h3 id="probability">
+
+                            --
+
+                        </h3>
+
+                    </div>
+
+
+                    <div class="progress-bar">
+
+                        <div id="riskBar"></div>
+
+                    </div>
+
+
+                    <div class="result-item">
+
+                        <span>
+
+                            Status
+
+                        </span>
+
+                        <h3 id="status">
+
+                            --
+
+                        </h3>
+
+                    </div>
+
+
+                    <div class="result-item">
+
+                        <span>
+
+                            Confidence
+
+                        </span>
+
+                        <h3 id="confidence">
+
+                            --
+
+                        </h3>
+
+                    </div>
+
+
+                    <div class="result-item">
+
+                        <span>
+
+                            Recommendation
+
+                        </span>
+
+                        <p id="recommendation">
+
+                            --
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <p>
+
+            Developed using FastAPI • LightGBM • HTML • CSS • JavaScript
+
+        </p>
+
+    </footer>
+
+
+    <!-- JavaScript -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
