@@ -141,28 +141,28 @@ def predict_fraud(transaction):
 
     probability = model.predict_proba(X)[0][1]
 
-prediction = (
-    1
-    if probability >= threshold
-    else 0
-)
+    prediction = (
+        1
+        if probability >= BEST_THRESHOLD
+        else 0
+    )
 
-# Confidence level
-if probability >= 0.90 or probability <= 0.10:
-    confidence = "High"
+    # Confidence level
+    if probability >= 0.90 or probability <= 0.10:
+        confidence = "High"
 
-elif probability >= 0.75 or probability <= 0.25:
-    confidence = "Medium"
+    elif probability >= 0.75 or probability <= 0.25:
+        confidence = "Medium"
 
-else:
-    confidence = "Low"
+    else:
+        confidence = "Low"
 
-return {
-    "fraud_probability": round(probability, 4),
-    "threshold": threshold,
-    "prediction": prediction,
-    "confidence": confidence
-}
+    return {
+        "fraud_probability": round(probability, 4),
+        "threshold": BEST_THRESHOLD,
+        "prediction": prediction,
+        "confidence": confidence
+    }
 
 
 
