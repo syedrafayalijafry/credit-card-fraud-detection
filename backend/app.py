@@ -1,0 +1,94 @@
+# backend/app.py
+
+from pathlib import Path
+import sys
+
+from fastapi import FastAPI
+from pydantic import BaseModel
+
+
+# PROJECT PATH
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
+sys.path.append(
+    str(PROJECT_ROOT)
+)
+
+
+# Import prediction pipeline
+
+from src.predict import predict_fraud
+
+
+
+# FASTAPI APP
+
+app = FastAPI(
+    title="Credit Card Fraud Detection API",
+    description="Predicts whether a transaction is fraudulent using a LightGBM model.",
+    version="1.0.0",
+)
+
+
+
+# INPUT SCHEMA
+
+class Transaction(BaseModel):
+
+    TransactionAmt: float
+
+    ProductCD: str | None = None
+
+    card4: str | None = None
+
+    card6: str | None = None
+
+    M4: str | None = None
+
+
+
+# ROOT ENDPOINT
+
+@app.get("/")
+def home():
+
+    return {
+        "message":
+        "Credit Card Fraud Detection API is running"
+    }
+
+
+
+# PREDICTION ENDPOINT
+
+@app.post("/predict")
+def predict(transaction: Transaction):
+
+    result = predict_fraud(
+        transaction.dict()
+    )
+
+
+    return {
+
+    "fraud_probability":
+        result["fraud_probability"],
+
+    "threshold":
+        result["threshold"],
+
+    "prediction":
+        result["prediction"],
+
+    "status":
+        (
+            "Fraud"
+            if result["prediction"] == 1
+            else "Legitimate"
+        ),
+
+    "confidence":
+        result["confidence"]
+
+}
