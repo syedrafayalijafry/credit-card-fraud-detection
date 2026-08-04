@@ -8,13 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 
-# PROJECT PATH
-
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-
-sys.path.append(
-    str(PROJECT_ROOT)
-)
+from src.predict import predict_fraud
 
 
 
