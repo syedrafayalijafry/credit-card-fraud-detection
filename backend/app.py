@@ -8,7 +8,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 
-from src.predict import predict_fraud
+from src.predict import predict_fraud, load_assets
+
 
 
 # FASTAPI APP
@@ -18,6 +19,11 @@ app = FastAPI(
     description="Predicts whether a transaction is fraudulent using a LightGBM model.",
     version="1.0.0",
 )
+
+
+@app.on_event("startup")
+def startup_event():
+    load_assets()
 
 app.add_middleware(
     CORSMiddleware,

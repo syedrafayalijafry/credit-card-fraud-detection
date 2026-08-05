@@ -31,38 +31,52 @@ BEST_THRESHOLD = 0.50
 
 # LOAD ASSETS
 
+# CACHE ASSETS IN MEMORY
+
+MODEL = None
+FEATURE_ORDER = None
+DEFAULT_VALUES = None
+FEATURE_MAPPING = None
+
+
 def load_assets():
 
-    print("Loading deployment assets...")
+    global MODEL
+    global FEATURE_ORDER
+    global DEFAULT_VALUES
+    global FEATURE_MAPPING
 
 
-    with open(MODEL_PATH, "rb") as f:
-        model = pickle.load(f)
+    if MODEL is None:
+
+        print("Loading deployment assets...")
 
 
-    with open(FEATURE_ORDER_PATH, "rb") as f:
-        feature_order = pickle.load(f)
+        with open(MODEL_PATH, "rb") as f:
+            MODEL = pickle.load(f)
 
 
-    with open(DEFAULT_VALUES_PATH, "rb") as f:
-        default_values = pickle.load(f)
+        with open(FEATURE_ORDER_PATH, "rb") as f:
+            FEATURE_ORDER = pickle.load(f)
 
 
-    with open(MAPPING_PATH, "r") as f:
-        feature_mapping = json.load(f)
+        with open(DEFAULT_VALUES_PATH, "rb") as f:
+            DEFAULT_VALUES = pickle.load(f)
 
 
-    print("Assets loaded successfully.")
+        with open(MAPPING_PATH, "r") as f:
+            FEATURE_MAPPING = json.load(f)
+
+
+        print("Assets loaded successfully.")
 
 
     return (
-        model,
-        feature_order,
-        default_values,
-        feature_mapping
+        MODEL,
+        FEATURE_ORDER,
+        DEFAULT_VALUES,
+        FEATURE_MAPPING
     )
-
-
 
 # PREPROCESS INPUT
 
