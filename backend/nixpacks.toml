@@ -1,2 +1,6 @@
 [phases.setup]
-aptPkgs = ["libgomp1"]
+aptPkgs = [
+    "libgomp1",
+    "gcc",
+    "g++"
+]
