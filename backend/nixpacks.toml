@@ -4,3 +4,6 @@ aptPkgs = [
     "gcc",
     "g++"
 ]
+
+[variables]
+NIXPACKS_NO_CACHE = "1"
