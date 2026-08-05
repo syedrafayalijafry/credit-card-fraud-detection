@@ -11,13 +11,6 @@ from pydantic import BaseModel
 from src.predict import predict_fraud
 
 
-
-# Import prediction pipeline
-
-from src.predict import predict_fraud
-
-
-
 # FASTAPI APP
 
 app = FastAPI(
